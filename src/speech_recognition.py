@@ -27,9 +27,13 @@ def transcribe_file(audio_file, model_path):
 
         return result.get("text", "")
 
+def load_model(model_path):
+    print("Loading VORA speech model...")
+    model = Model(model_path)
+    print("Speech model loaded.")
+    return model
 
-
-def listen_live(model_path, device=None):
+def listen_live(model, device=None):
     audio_queue = queue.Queue()
 
     device_info = sd.query_devices(device, "input")
@@ -37,7 +41,6 @@ def listen_live(model_path, device=None):
 
     print(f"Microphone sample rate: {sample_rate} Hz")
 
-    model = Model(model_path)
     recognizer = KaldiRecognizer(model, sample_rate)
 
     def audio_callback(indata, frames, time, status):

@@ -1,15 +1,28 @@
 def parse_command(text):
     text = text.lower().strip()
 
-    if "left" in text:
+    if "move left" in text:
         return "MOVE_LEFT"
-    elif "right" in text:
+
+    if "move right" in text:
         return "MOVE_RIGHT"
-    elif "up" in text:
+
+    if "move up" in text:
         return "MOVE_UP"
-    elif "down" in text:
+
+    if "move down" in text:
         return "MOVE_DOWN"
-    elif "stop" in text:
+
+    if "open gripper" in text:
+        return "OPEN_GRIPPER"
+
+    if "close gripper" in text:
+        return "CLOSE_GRIPPER"
+
+    if "go home" in text or "home" in text:
+        return "HOME"
+
+    if "stop" in text:
         return "STOP"
-    else:
-        return "UNKNOWN"
+
+    return "UNKNOWN"
