@@ -6,6 +6,31 @@ import sounddevice as sd
 from vosk import Model, KaldiRecognizer
 
 
+COMMAND_PHRASES = [
+    "move left",
+    "move right",
+    "move up",
+    "move down",
+    "open gripper",
+    "close gripper",
+    "go home",
+    "stop",
+    "don't move left",
+    "don't move right",
+    "don't move up",
+    "don't move down",
+    "don't open gripper",
+    "don't close gripper",
+    "do not move left",
+    "do not move right",
+    "do not move up",
+    "do not move down",
+    "do not open gripper",
+    "do not close gripper",
+    "[unk]"
+]
+
+
 def transcribe_file(audio_file, model_path):
     with wave.open(audio_file, "rb") as audio:
         model = Model(model_path)
@@ -27,11 +52,13 @@ def transcribe_file(audio_file, model_path):
 
         return result.get("text", "")
 
+
 def load_model(model_path):
     print("Loading VORA speech model...")
     model = Model(model_path)
     print("Speech model loaded.")
     return model
+
 
 def listen_live(model, device=None):
     audio_queue = queue.Queue()
@@ -41,7 +68,11 @@ def listen_live(model, device=None):
 
     print(f"Microphone sample rate: {sample_rate} Hz")
 
-    recognizer = KaldiRecognizer(model, sample_rate)
+    recognizer = KaldiRecognizer(
+        model,
+        sample_rate,
+        json.dumps(COMMAND_PHRASES)
+    )
 
     def audio_callback(indata, frames, time, status):
         if status:

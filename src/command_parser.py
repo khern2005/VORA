@@ -1,6 +1,13 @@
 def parse_command(text):
     text = text.lower().strip()
 
+    # Safety: reject commands containing negation
+    negation_phrases = ["don't", "do not", "dont", "never"]
+    words = text.split()
+
+    if any(phrase in text for phrase in negation_phrases) or "no" in words:
+        return "UNKNOWN"
+
     if "move left" in text:
         return "MOVE_LEFT"
 
