@@ -34,11 +34,7 @@ COMMAND_PHRASES = [
 def transcribe_file(audio_file, model_path):
     with wave.open(audio_file, "rb") as audio:
         model = Model(model_path)
-
-        recognizer = KaldiRecognizer(
-            model,
-            audio.getframerate()
-        )
+        recognizer = KaldiRecognizer(model, audio.getframerate())
 
         while True:
             data = audio.readframes(4000)
@@ -49,7 +45,6 @@ def transcribe_file(audio_file, model_path):
             recognizer.AcceptWaveform(data)
 
         result = json.loads(recognizer.FinalResult())
-
         return result.get("text", "")
 
 
@@ -95,7 +90,7 @@ def listen_live(model, device=None):
 
             if recognizer.AcceptWaveform(data):
                 result = json.loads(recognizer.Result())
-                text = result.get("text", "")
+                text = result.get("text", "").strip()
 
                 if text:
-                    return text
+                    yield text

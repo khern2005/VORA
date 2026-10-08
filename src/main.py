@@ -4,7 +4,6 @@ from robot_controller import execute_command
 
 
 MODEL_PATH = "models/vosk-model-small-en-us-0.15"
-
 DEVICE = 0
 
 
@@ -15,9 +14,7 @@ def main():
 
     model = load_model(MODEL_PATH)
 
-    while True:
-        text = listen_live(model, device=DEVICE)
-
+    for text in listen_live(model, device=DEVICE):
         print(f"\nVORA heard: {text}")
 
         command = parse_command(text)
